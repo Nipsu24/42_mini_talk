@@ -6,7 +6,7 @@
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:01:23 by mmeier            #+#    #+#             */
-/*   Updated: 2024/04/22 16:15:05 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/04/25 11:18:57 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ int	error_invalid_input(int code)
 {
 	if (code == 0)
 	{
-		ft_printf("ERROR.\nInvalid server-pid :(");
+		ft_putstr_fd("ERROR.\nInvalid server-pid :(\n", 2);
 		return (-1);
 	}
 	if (code == 1)
 	{
-		ft_printf("ERROR.\nInvalid input :(");
+		ft_putstr_fd("ERROR.\nInvalid input :(\n", 2);
 		return (-1);
 	}
 	return (0);
