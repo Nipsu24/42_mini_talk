@@ -18,4 +18,12 @@
 # include "./libft/libft.h"
 # include <signal.h>
 
+typedef struct s_signal
+{
+	int		bits;
+	int		bytes;
+	int		int_compl;
+	char	*str;
+}
+				t_signal;
 #endif

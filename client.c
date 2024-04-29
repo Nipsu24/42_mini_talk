@@ -58,11 +58,30 @@ void	bitshift_ctb(char c, int pid)
 	}
 }
 
+void	bitshift_itb(int nbr, int pid)
+{
+	int	i;
+
+	i = 0;
+	int	binary[8];
+	while (i <= 7)
+	{
+		binary[i] = (nbr >> (7 - i)) & 1;
+		if (binary[i] == 1)
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
+		i++;
+		usleep(300);
+	}
+}
+
 void	char_to_bit(int pid, char *str, int str_len)
 {
 	int	i;
 
 	i = 0;
+	bitshift_itb(str_len, pid);
 	while (str_len > 0)
 	{
 		bitshift_ctb(str[i], pid);
