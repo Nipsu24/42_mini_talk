@@ -20,7 +20,8 @@ OBJ_DIR = obj
 LIBFT = ./libft
 
 FILES1 = server.c
-FILES2 = client.c
+FILES2 = client.c \
+		 error_check_utils.c
 
 OBJ_FILES1 = $(addprefix $(OBJ_DIR)/, $(FILES1:.c=.o))
 OBJ_FILES2 = $(addprefix $(OBJ_DIR)/, $(FILES2:.c=.o))

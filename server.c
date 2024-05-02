@@ -12,9 +12,9 @@
 
 #include "mini_talk.h"
 
-void	str_len_received(t_signal *sig)
+static void	str_len_received(t_signal *sig)
 {
-	if ((sig->bits == sizeof(int) * 8) && !(sig->int_compl))
+	if (sig->bits == sizeof(int) * 8 && sig->int_compl == 0)
 	{
 		sig->int_compl = 1;
 		sig->str = calloc(sig->bytes + 1, sizeof(char));
@@ -28,7 +28,7 @@ void	str_len_received(t_signal *sig)
 	}
 }
 
-void	str_received(t_signal *sig, pid_t pid)
+static void	str_received(t_signal *sig, pid_t pid)
 {
 	static int	i;
 	(void)pid;
@@ -36,7 +36,8 @@ void	str_received(t_signal *sig, pid_t pid)
 	if (sig->bits == sizeof(char) * 8 && sig->int_compl == 1)
 	{
 		sig->str[i] = sig->bytes;
-		i++;
+		if (sig->str[i])
+			i++;
 		if (sig->str[i] == '\0')
 		{
 			ft_putstr_fd("message client:\n", 1);
@@ -51,34 +52,46 @@ void	str_received(t_signal *sig, pid_t pid)
 	}
 }
 
-void	signal_handler(int signum, siginfo_t *info, void *content)
+static void	init_sig(t_signal *sig)
+{
+	sig->bits = 0;
+	sig->bytes = 0;
+	sig->int_compl = 0;
+	sig->str = NULL;
+	sig->position = 0;
+	sig->bitmask = 0;
+}
+
+static void	signal_handler(int signum, siginfo_t *info, void *content)
 {
 	static t_signal	sig;
-	int	position;
-	int	bitmask;
-	
+	static int		init;
+
+	init = 0;
 	(void)content;
 	(void)info;
-	position = 0;
-	bitmask = 0;
-	sig.int_compl = 0;
+	if (init == 0)
+	{
+		init_sig(&sig);
+		init = 1;
+	}
 	if (sig.bits == 0)
 		sig.bytes = 0;
-	if (signum == SIGUSR2 && !sig.int_compl)
+	if (signum == SIGUSR2 && sig.int_compl == 0)
 	{
-		position =((sizeof(int) * 8) - 1) - sig.bits;
-		bitmask = 1 << position;
-		sig.bytes |= bitmask;
-		position = 0;
-		bitmask = 0;
+		sig.position =((sizeof(int) * 8) - 1) - sig.bits;
+		sig.bitmask = 1 << sig.position;
+		sig.bytes |= sig.bitmask;
+		sig.position = 0;
+		sig.bitmask = 0;
 	}
 	else if (signum == SIGUSR2 && sig.int_compl == 1)
 	{
-		position =((sizeof(char) * 8) - 1) - sig.bits;
-		bitmask = 1 << position;
-		sig.bytes |= bitmask;
-		position = 0;
-		bitmask = 0;
+		sig.position =((sizeof(char) * 8) - 1) - sig.bits;
+		sig.bitmask = 1 << sig.position;
+		sig.bytes |= sig.bitmask;
+		sig.position = 0;
+		sig.bitmask = 0;
 	}
 	sig.bits++;
 	str_len_received(&sig);
@@ -90,11 +103,9 @@ int	main(void)
 {
 	struct sigaction	s_server;
 	
-	ft_putstr_fd("Server PID: ", 1);
-	ft_putnbr_fd(getpid(), 1);
 	sigemptyset(&s_server.sa_mask);
-	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
 	s_server.sa_sigaction = signal_handler;
+	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
 	sigaction(SIGUSR1, &s_server, NULL);
 	if (sigaction < 0)
 	{
@@ -107,6 +118,8 @@ int	main(void)
 		ft_putstr_fd("ERROR.\nSIGUSR2 could not be configured :(\n", 2);
 		exit(1);
 	}
+	ft_putstr_fd("Server PID: ", 1);
+	ft_putnbr_fd(getpid(), 1);
 	while (1)
 	{
 		pause();

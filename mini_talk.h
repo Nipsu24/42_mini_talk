@@ -13,8 +13,6 @@
 #ifndef MINI_TALK_H
 # define MINI_TALK_H
 
-# include <stdlib.h>
-# include <fcntl.h>
 # include "./libft/libft.h"
 # include <signal.h>
 
@@ -24,6 +22,11 @@ typedef struct s_signal
 	int		bytes;
 	int		int_compl;
 	char	*str;
+	int		position;
+	int		bitmask;
 }
 				t_signal;
+int		not_only_digits(char *str);
+int		error_invalid_input(int code);
+pid_t	ft_atop(const char *str);
 #endif
