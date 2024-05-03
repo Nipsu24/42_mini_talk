@@ -29,4 +29,7 @@ typedef struct s_signal
 int		not_only_digits(char *str);
 int		error_invalid_input(int code);
 pid_t	ft_atop(const char *str);
+void	send_bit(pid_t pid, char bit, char pause_sig);
+void	store_bits_in_bytes(t_signal *sig, int int_chr_flag);
+void	init_sig(t_signal *sig);
 #endif

@@ -19,9 +19,12 @@ SRC_DIR = ./
 OBJ_DIR = obj
 LIBFT = ./libft
 
-FILES1 = server.c
+FILES1 = server.c \
+		 error_check_utils.c \
+		 utils.c
 FILES2 = client.c \
-		 error_check_utils.c
+		 error_check_utils.c \
+		 utils.c
 
 OBJ_FILES1 = $(addprefix $(OBJ_DIR)/, $(FILES1:.c=.o))
 OBJ_FILES2 = $(addprefix $(OBJ_DIR)/, $(FILES2:.c=.o))
@@ -36,7 +39,7 @@ $(SERVER): $(OBJ_FILES1) $(LIBFT)
 $(CLIENT): $(OBJ_FILES2) $(LIBFT)
 	make -C $(LIBFT) > /dev/null
 	$(CC) $(FLAGS) -o $(CLIENT) $(OBJ_FILES2) -L$(LIBFT) -lft
-	@echo "\033[32m$(SERVER) has been built successfully!\033[0m"
+	@echo "\033[32m$(CLIENT) has been built successfully!\033[0m"
 
 fsanitize1: 
 	$(CC) -o $(SERVER) $(FILES1) -L$(LIBFT) -lft -g -fsanitize=address -static-libsan 
