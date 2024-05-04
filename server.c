@@ -56,7 +56,7 @@ static void	str_received(t_signal *sig, pid_t pid)
 	}
 }
 
-void	store_bits_in_bytes(t_signal *sig, int int_chr_flag)
+static void	store_bits_in_bytes(t_signal *sig, int int_chr_flag)
 {
 	if (int_chr_flag == 0)
 	{
@@ -81,7 +81,6 @@ static void	signal_handler(int signum, siginfo_t *info, void *content)
 	static t_signal	sig;
 	static int		init;
 
-	usleep(100);
 	(void)content;
 	(void)info;
 	if (init == 0)

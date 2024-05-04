@@ -29,22 +29,6 @@ static void	bitshift_ctb(pid_t pid, char c)
 	}
 }
 
-static void	bitshift_itb(pid_t pid, int nbr)
-{
-	int	i;
-
-	i = 0;
-	int	binary[32];
-	while (i <= 31)
-	{
-		binary[i] = (nbr >> (31 - i)) & 1;
-		if (binary[i] == 1)
-			send_bit(pid, binary[i], 1);
-		if (binary[i] == 0)
-			send_bit(pid, binary[i], 1);
-		i++;
-	}
-}
 
 static void	char_to_bit(pid_t pid, char *str, int str_len)
 {
@@ -61,13 +45,30 @@ static void	char_to_bit(pid_t pid, char *str, int str_len)
 
 static void	client_handler(int signum)
 {
+	static int	count;
+
 	if (signum == SIGUSR1)
+	{
+		ft_putstr_fd("[", 1);
+		ft_putnbr_fd(count, 1);
+		ft_putstr_fd("]: ", 1);
 		ft_putstr_fd("Signal received from Server\n", 1);
+		count++;
+	}
 	else if (signum == SIGUSR2)
 	{
 		ft_putstr_fd("End of message received from Server\n", 1);
 		exit(0);
 	}
+}
+static void	init_sigusr(struct sigaction *s_client)
+{
+	sigaction(SIGUSR1, s_client, NULL);
+	if (sigaction < 0)
+		error_invalid_input(2);
+	sigaction(SIGUSR2, s_client, NULL);
+	if (sigaction < 0)
+		error_invalid_input(3);
 }
 
 int	main(int ac, char *av[])
@@ -76,8 +77,6 @@ int	main(int ac, char *av[])
 	int					str_len;
 	struct sigaction	s_client;
 
-	pid = 0;
-	str_len = 0;
 	if (ac != 3)
 		return (error_invalid_input(1));
 	else
@@ -90,12 +89,7 @@ int	main(int ac, char *av[])
 		sigemptyset(&s_client.sa_mask);
 		s_client.sa_flags = SA_RESTART;
 		s_client.sa_handler = client_handler;
-		sigaction(SIGUSR1, &s_client, NULL);
-		if (sigaction < 0)
-			error_invalid_input(2);
-		sigaction(SIGUSR2, &s_client, NULL);
-		if (sigaction < 0)
-			error_invalid_input(3);
+		init_sigusr(&s_client);
 		str_len = ft_strlen(av[2]);
 		bitshift_itb(pid, str_len);
 		char_to_bit(pid, av[2], str_len);
