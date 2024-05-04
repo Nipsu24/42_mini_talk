@@ -65,10 +65,10 @@ static void	init_sigusr(struct sigaction *s_client)
 {
 	sigaction(SIGUSR1, s_client, NULL);
 	if (sigaction < 0)
-		error_invalid_input(2);
+		error_message(2);
 	sigaction(SIGUSR2, s_client, NULL);
 	if (sigaction < 0)
-		error_invalid_input(3);
+		error_message(3);
 }
 
 int	main(int ac, char *av[])
@@ -78,14 +78,14 @@ int	main(int ac, char *av[])
 	struct sigaction	s_client;
 
 	if (ac != 3)
-		return (error_invalid_input(1));
+		return (error_message(1));
 	else
 	{
 		if (not_only_digits(av[1]))
-			return (error_invalid_input(0));
+			return (error_message(0));
 		pid = ft_atop(av[1]);
 		if (!pid)
-			return (error_invalid_input(0));
+			return (error_message(0));
 		sigemptyset(&s_client.sa_mask);
 		s_client.sa_flags = SA_RESTART;
 		s_client.sa_handler = client_handler;

@@ -109,10 +109,10 @@ int	main(void)
 	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
 	sigaction(SIGUSR1, &s_server, NULL);
 	if (sigaction < 0)
-		error_invalid_input(2);
+		error_message(2);
 	sigaction(SIGUSR2, &s_server, NULL);
 	if (sigaction < 0)
-		error_invalid_input(3);
+		error_message(3);
 	ft_putstr_fd("Server PID: ", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putstr_fd("\n", 1);

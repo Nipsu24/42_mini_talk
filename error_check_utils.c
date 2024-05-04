@@ -26,7 +26,7 @@ int	not_only_digits(char *str)
 	return (0);
 }
 
-int	error_invalid_input(int code)
+int	error_message(int code)
 {
 	if (code == 0)
 	{
