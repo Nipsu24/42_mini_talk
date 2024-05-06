@@ -3,21 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariusmeier <marvin@42.fr>                 +#+  +:+       +#+        */
+/*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:47:00 by mariusmeier       #+#    #+#             */
-/*   Updated: 2024/05/03 14:47:03 by mariusmeier      ###   ########.fr       */
+/*   Updated: 2024/05/06 16:08:07 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
 
+/*Converts int to its bit representation via bitshift operation.
+  Starting from most significant bit, bits are shifted from left
+  to right and every time, last bit resulting from this shift is 
+  extracted via '&' operation. Bit is then given to send_bit function,
+  additionally to pid and flag (1) (indication for pausing process in 
+  send_bit function) */
 void	bitshift_itb(pid_t pid, int nbr)
 {
 	int	i;
+	int	binary[32];
 
 	i = 0;
-	int	binary[32];
 	while (i <= 31)
 	{
 		binary[i] = (nbr >> (31 - i)) & 1;
@@ -28,25 +34,29 @@ void	bitshift_itb(pid_t pid, int nbr)
 		i++;
 	}
 }
-void	send_bit(pid_t pid, char bit, char pause_sig)
+
+/*pause_sig = 0 & SIGUSR1 (bit = 0) sent by server each time after 
+  receiving a "bit" (SIGUSR1/SIGUSR2 signal) from client (client always
+  sends pause_sig = 1 for pausing).
+  pause_sig = 0 & SIGUSR2 (bit = 1) sent by server after receiving 
+  complete *str.*/
+void	send_bit(pid_t pid, int bit, int pause_sig)
 {
 	if (bit == 0)
 	{
-		kill(pid, SIGUSR1);
-		if (kill < 0)
+		if (kill(pid, SIGUSR1) < 0)
 		{
 			ft_putstr_fd("Error\n. Bit could not be sent\n", 1);
 			exit (1);
-		}	
+		}
 	}
 	else if (bit == 1)
 	{
-		kill(pid, SIGUSR2);
-		if (kill < 0)
+		if (kill(pid, SIGUSR2) < 0)
 		{
 			ft_putstr_fd("Error\n. Bit could not be sent\n", 1);
 			exit (1);
-		}	
+		}
 	}
 	if (pause_sig != 0)
 		pause();

@@ -6,7 +6,7 @@
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:39:08 by mmeier            #+#    #+#             */
-/*   Updated: 2024/04/22 11:36:14 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:55:46 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ typedef struct s_signal
 	char	*str;
 	int		position;
 	int		bitmask;
-}
-				t_signal;
+}				t_signal;
+
 int		not_only_digits(char *str);
 int		error_message(int code);
 pid_t	ft_atop(const char *str);
-void	send_bit(pid_t pid, char bit, char pause_sig);
+void	send_bit(pid_t pid, int bit, int pause_sig);
 void	init_sig(t_signal *sig);
 void	bitshift_itb(pid_t pid, int nbr);
 #endif

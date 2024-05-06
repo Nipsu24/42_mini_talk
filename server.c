@@ -6,12 +6,15 @@
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:01:38 by mmeier            #+#    #+#             */
-/*   Updated: 2024/04/25 11:36:34 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:41:29 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
 
+/*Checks if correct amount of bits (32) for integer has been received and 
+  allocates needed memory based on strlen for the upcoming string to be 
+  received*/
 static void	str_len_received(t_signal *sig)
 {
 	if (sig->bits == sizeof(int) * 8 && sig->int_compl == 0)
@@ -31,10 +34,13 @@ static void	str_len_received(t_signal *sig)
 	}
 }
 
+/*In case int for strlen has been received (sig->int_compl = 1) and amount 
+  of bits for char received, char is copied to str. If copied character is 
+  null-terminator str is printed.*/
 static void	str_received(t_signal *sig, pid_t pid)
 {
 	static int	i;
-	
+
 	(void)pid;
 	if (sig->bits == sizeof(char) * 8 && sig->int_compl == 1)
 	{
@@ -56,11 +62,14 @@ static void	str_received(t_signal *sig, pid_t pid)
 	}
 }
 
+/*Determines position of bit that needs to be changed to 1. This is stored in 
+  bitmask which is in turn "copied" to sig-bytes. Depening on flag operation 
+  is either done with lenght of int or char.*/
 static void	store_bits_in_bytes(t_signal *sig, int int_chr_flag)
 {
 	if (int_chr_flag == 0)
 	{
-		sig->position =((sizeof(int) * 8) - 1) - sig->bits;
+		sig->position = ((sizeof(int) * 8) - 1) - sig->bits;
 		sig->bitmask = 1 << sig->position;
 		sig->bytes |= sig->bitmask;
 		sig->position = 0;
@@ -68,7 +77,7 @@ static void	store_bits_in_bytes(t_signal *sig, int int_chr_flag)
 	}
 	if (int_chr_flag == 1)
 	{
-		sig->position =((sizeof(char) * 8) - 1) - sig->bits;
+		sig->position = ((sizeof(char) * 8) - 1) - sig->bits;
 		sig->bitmask = 1 << sig->position;
 		sig->bytes |= sig->bitmask;
 		sig->position = 0;
@@ -76,6 +85,9 @@ static void	store_bits_in_bytes(t_signal *sig, int int_chr_flag)
 	}
 }
 
+/*Defines how server should react when receiving SIGUSR1/SIGUSR2 signal
+  For each received bit, server sends signal back to client via send_bit 
+  function. */
 static void	signal_handler(int signum, siginfo_t *info, void *content)
 {
 	static t_signal	sig;
@@ -99,19 +111,18 @@ static void	signal_handler(int signum, siginfo_t *info, void *content)
 	str_received(&sig, info->si_pid);
 	send_bit(info->si_pid, 0, 0);
 }
-	
+
+/*Installs signal handler for SIGUSR1 / SIGUSR2 via sigaction*/
 int	main(void)
 {
 	struct sigaction	s_server;
-	
+
 	sigemptyset(&s_server.sa_mask);
 	s_server.sa_sigaction = signal_handler;
 	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
-	sigaction(SIGUSR1, &s_server, NULL);
-	if (sigaction < 0)
+	if (sigaction(SIGUSR1, &s_server, NULL) < 0)
 		error_message(2);
-	sigaction(SIGUSR2, &s_server, NULL);
-	if (sigaction < 0)
+	if (sigaction(SIGUSR2, &s_server, NULL) < 0)
 		error_message(3);
 	ft_putstr_fd("Server PID: ", 1);
 	ft_putnbr_fd(getpid(), 1);
