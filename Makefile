@@ -6,7 +6,7 @@
 #    By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 11:47:56 by mmeier            #+#    #+#              #
-#    Updated: 2024/05/08 15:14:39 by mmeier           ###   ########.fr        #
+#    Updated: 2024/05/08 16:27:56 by mmeier           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ FLAGS = -Wall -Wextra -Werror -Wunreachable-code -Ofast
 
 SRC_DIR = ./
 OBJ_DIR = obj
-OBJ_DIR_BONUS = obj_bonus
 LIBFT = ./libft
 
 FILES1 = server.c error_check_utils.c utils.c
