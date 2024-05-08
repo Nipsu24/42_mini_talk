@@ -6,7 +6,7 @@
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:47:00 by mariusmeier       #+#    #+#             */
-/*   Updated: 2024/05/07 15:56:53 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:39:54 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	send_bit(pid_t pid, int bit, int pause_sig)
 	{
 		if (kill(pid, SIGUSR1) < 0)
 		{
-			ft_putstr_fd("Error\n. Bit could not be sent\n", 1);
+			ft_putstr_fd("Error.\nBit could not be sent.\n", 1);
 			exit (1);
 		}
 	}
@@ -54,7 +54,7 @@ void	send_bit(pid_t pid, int bit, int pause_sig)
 	{
 		if (kill(pid, SIGUSR2) < 0)
 		{
-			ft_putstr_fd("Error\n. Bit could not be sent\n", 1);
+			ft_putstr_fd("Error.\nBit could not be sent.\n", 1);
 			exit (1);
 		}
 	}
