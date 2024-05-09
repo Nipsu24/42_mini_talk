@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server _bonus.c                                    :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:01:38 by mmeier            #+#    #+#             */
-/*   Updated: 2024/05/07 15:56:14 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/05/09 12:49:11 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void	signal_handler(int signum, siginfo_t *info, void *content)
 
 	(void)content;
 	(void)info;
+	usleep(100);
 	if (init == 0)
 	{
 		init_sig(&sig);

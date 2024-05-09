@@ -6,7 +6,7 @@
 /*   By: mmeier <mmeier@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:01:38 by mmeier            #+#    #+#             */
-/*   Updated: 2024/05/06 15:41:29 by mmeier           ###   ########.fr       */
+/*   Updated: 2024/05/09 12:50:03 by mmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void	signal_handler(int signum, siginfo_t *info, void *content)
 
 	(void)content;
 	(void)info;
+	usleep(100);
 	if (init == 0)
 	{
 		init_sig(&sig);
