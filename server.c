@@ -56,7 +56,8 @@ static void	str_received(t_signal *sig, pid_t pid)
 			sig->str = NULL;
 			sig->int_compl = 0;
 			i = 0;
-			send_bit(pid, 1, 0);
+			if (!(send_bit(pid, 1, 0)))
+				free_and_exit(&sig->str);
 		}
 		sig->bits = 0;
 	}
@@ -110,7 +111,8 @@ static void	signal_handler(int signum, siginfo_t *info, void *content)
 	sig.bits++;
 	str_len_received(&sig);
 	str_received(&sig, info->si_pid);
-	send_bit(info->si_pid, 0, 0);
+	if (!(send_bit(info->si_pid, 0, 0)))
+		free_and_exit(&sig.str);
 }
 
 /*Installs signal handler for SIGUSR1 / SIGUSR2 via sigaction*/

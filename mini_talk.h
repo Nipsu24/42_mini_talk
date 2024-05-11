@@ -29,7 +29,8 @@ typedef struct s_signal
 int		not_only_digits(char *str);
 int		error_message(int code);
 pid_t	ft_atop(const char *str);
-void	send_bit(pid_t pid, int bit, int pause_sig);
+int		send_bit(pid_t pid, int bit, int pause_sig);
 void	init_sig(t_signal *sig);
 void	bitshift_itb(pid_t pid, int nbr);
+void	free_and_exit(char **str);
 #endif

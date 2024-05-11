@@ -28,9 +28,11 @@ static void	bitshift_ctb(pid_t pid, char c)
 	{
 		binary[i] = (c >> (7 - i)) & 1;
 		if (binary[i] == 1)
-			send_bit(pid, binary[i], 1);
+			if(!(send_bit(pid, binary[i], 1)))
+				exit (1);
 		if (binary[i] == 0)
-			send_bit(pid, binary[i], 1);
+			if (!(send_bit(pid, binary[i], 1)))
+				exit (1);
 		i++;
 	}
 }

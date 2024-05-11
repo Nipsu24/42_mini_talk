@@ -50,3 +50,13 @@ int	error_message(int code)
 	}
 	return (0);
 }
+
+void	free_and_exit(char **str)
+{
+	if (*str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+	exit (1);
+}

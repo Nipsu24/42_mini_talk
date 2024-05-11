@@ -28,9 +28,11 @@ void	bitshift_itb(pid_t pid, int nbr)
 	{
 		binary[i] = (nbr >> (31 - i)) & 1;
 		if (binary[i] == 1)
-			send_bit(pid, binary[i], 1);
+			if (!(send_bit(pid, binary[i], 1)))
+				exit (1);
 		if (binary[i] == 0)
-			send_bit(pid, binary[i], 1);
+			if (!(send_bit(pid, binary[i], 1)))
+				exit (1);
 		i++;
 	}
 }
@@ -40,14 +42,14 @@ void	bitshift_itb(pid_t pid, int nbr)
   sends pause_sig = 1 for pausing).
   pause_sig = 0 & SIGUSR2 (bit = 1) sent by server after receiving 
   complete *str.*/
-void	send_bit(pid_t pid, int bit, int pause_sig)
+int	send_bit(pid_t pid, int bit, int pause_sig)
 {
 	if (bit == 0)
 	{
 		if (kill(pid, SIGUSR1) < 0)
 		{
 			ft_putstr_fd("Error.\nBit could not be sent.\n", 1);
-			exit (1);
+			return (0);
 		}
 	}
 	else if (bit == 1)
@@ -55,11 +57,12 @@ void	send_bit(pid_t pid, int bit, int pause_sig)
 		if (kill(pid, SIGUSR2) < 0)
 		{
 			ft_putstr_fd("Error.\nBit could not be sent.\n", 1);
-			exit (1);
+			return (0);
 		}
 	}
 	if (pause_sig != 0)
 		pause();
+	return (1);
 }
 
 void	init_sig(t_signal *sig)
