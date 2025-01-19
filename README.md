@@ -10,8 +10,6 @@
 	<a href="#requirements">Requirements</a>
 	<span> · </span>
 	<a href="#instructions">Instructions</a>
-	<span> · </span>
-	<a href="#references">References</a>
 </h2>
 
 ## About
