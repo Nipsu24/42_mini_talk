@@ -1,6 +1,6 @@
 <h1 align="center">mini_talk</h1>
 
-> Hive Helsinki (School 42) 7th curriculum project (Rank02)
+> Hive Helsinki (School 42) 7th project (Rank02/06) of core curriculum.
 
 <h2 align="center">
 	<a href="#about">About</a>
