@@ -15,7 +15,7 @@
 </h2>
 
 ## About
-The repository contains files for creating two executables (./server and ./client) which can communicate with each other by utelising signals.
+The repository contains files for creating two executables (./server and ./client) which can communicate with each other by utilising signals.
 
 ## Program
 Launching the server executable presents a `PID` in the terminal which can be used as first argument for the client executable which in turn
